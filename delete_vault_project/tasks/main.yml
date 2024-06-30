@@ -1,0 +1,47 @@
+# create default kv engineitem.
+- name: Get kv engines
+  ansible.builtin.uri:
+    validate_certs: true
+    method: GET
+    url: "https://{{ vault_domain }}/v1/sys/mounts/{{ gitlab_group_name }}"
+    status_code: [200, 400]
+    headers:
+      "X-Vault-Token": "{{ vault_token }}"
+  register: get_engines
+
+- name: Delete project kv engine
+  ansible.builtin.uri:
+    validate_certs: true
+    url: "https://{{ vault_domain }}/v1/sys/mounts/{{ gitlab_group_name }}"
+    method: DELETE
+    status_code: [204]
+    headers:
+      "X-Vault-Token": "{{ vault_token }}"
+  when: get_engines.status == 400
+
+- name: Delete access policy
+  ansible.builtin.uri:
+    validate_certs: true
+    url: "https://{{ vault_domain }}/v1/sys/policies/acl/{{ gitlab_group_name }}"
+    method: DELETE
+    status_code: [200, 204]
+    headers:
+      "X-Vault-Token": "{{ vault_token }}"
+
+- name: Delete oidc role
+  ansible.builtin.uri:
+    validate_certs: true
+    url: "https://{{ vault_domain }}/v1/auth/oidc/role/{{ gitlab_group_name }}"
+    method: DELETE
+    status_code: [200, 204]
+    headers:
+      "X-Vault-Token": "{{ vault_token }}"
+
+- name: Delete ESO SecretStore AppRole
+  ansible.builtin.uri:
+    validate_certs: true
+    url: "https://{{ vault_domain }}/v1/auth/approle/role/eso_{{ gitlab_group_name }}"
+    method: DELETE
+    status_code: [200, 204]
+    headers:
+      "X-Vault-Token": "{{ vault_token }}"

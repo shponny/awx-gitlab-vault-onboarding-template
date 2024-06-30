@@ -1,0 +1,5 @@
+- name: Create Vault Project
+  become: false
+  hosts: all
+  roles:
+    - create_vault_project

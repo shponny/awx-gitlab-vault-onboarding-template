@@ -1,0 +1,9 @@
+path "{{ gitlab_group_name }}*"
+{
+  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+}
+
+path "sys/mounts/{{ gitlab_group_name }}*"
+{
+  capabilities = ["create", "read", "update", "delete", "list"]
+}

@@ -1,0 +1,18 @@
+{
+    "user_claim": "sub",
+    "allowed_redirect_uris": [
+        "http://localhost:8250/oidc/callback",
+        "https://{{ vault_domain }}/ui/vault/auth/oidc/oidc/callback"
+    ],
+    "bound_audiences": "{{ oidc_config.json.data.oidc_client_id }}",
+    "oidc_scopes": "openid,email",
+    "role_type": "oidc",
+    "policies": "{{ gitlab_group_name }}",
+    "ttl": "8h",
+    "bound_claims": {
+        "groups": ["{{ gitlab_group_name }}"]
+    },
+    "claim_mappings": {
+        "email": "email_metadata"
+    }
+}

@@ -1,0 +1,5 @@
+- name: Delete Vault Project
+  become: false
+  hosts: all
+  roles:
+    - delete_vault_project
